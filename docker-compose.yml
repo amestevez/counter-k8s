@@ -1,0 +1,40 @@
+﻿# Elimina esta línea: version: '3.8'
+
+services:
+  redis:
+    image: redis:7-alpine
+    container_name: counter-redis
+    volumes:
+      - redis_data:/data
+    networks:
+      - counter-network
+
+  web:
+    build: ./web
+    container_name: counter-web
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    volumes:
+      - ./web:/app
+    depends_on:
+      - redis
+    networks:
+      - counter-network
+
+  nginx:
+    build: ./nginx
+    container_name: counter-nginx
+    ports:
+      - "8080:80"
+    depends_on:
+      - web
+    networks:
+      - counter-network
+
+volumes:
+  redis_data:
+
+networks:
+  counter-network:
+    driver: bridge
