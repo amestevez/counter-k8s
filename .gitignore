@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+venv/
+.venv/
+
+# Entorno y secretos
+.env
+
+# Kubernetes local
+kind-config.yaml
+
+# Logs
+*.log
+
+# Editors / OS
+.DS_Store
+.vscode/
+.idea/
+*.swp
