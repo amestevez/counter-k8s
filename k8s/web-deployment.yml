@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: web
 spec:
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
       app: web
@@ -31,10 +31,10 @@ spec:
         resources:
           requests:
             memory: "64Mi"
-            cpu: "100m"
+            cpu: "10m"
           limits:
             memory: "128Mi"
-            cpu: "250m"
+            cpu: "50m"
 ---
 apiVersion: v1
 kind: Service

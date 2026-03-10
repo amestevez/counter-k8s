@@ -61,6 +61,19 @@ else
   kind create cluster --config kind-config.yaml
 fi
 
+# ─── 2b. Configurar HPA sync period a 10s ─────────────────────
+echo ""
+echo "⚙️  [2b] Configurando HPA sync period a 10s..."
+if docker exec kind-control-plane grep -q "horizontal-pod-autoscaler-sync-period" /etc/kubernetes/manifests/kube-controller-manager.yaml; then
+  docker exec kind-control-plane sed -i 's/--horizontal-pod-autoscaler-sync-period=.*/--horizontal-pod-autoscaler-sync-period=10s/' /etc/kubernetes/manifests/kube-controller-manager.yaml
+  echo "   Parámetro actualizado."
+else
+  docker exec kind-control-plane sed -i '/- kube-controller-manager/a\    - --horizontal-pod-autoscaler-sync-period=10s' /etc/kubernetes/manifests/kube-controller-manager.yaml
+  echo "   Parámetro añadido."
+fi
+echo "   Esperando reinicio del controller manager..."
+sleep 15
+
 # ─── 3. Conectar registry a la red de kind ─────────────────────
 echo ""
 echo "🔗 [3/6] Conectando registry a la red de kind..."
