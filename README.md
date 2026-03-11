@@ -81,7 +81,7 @@ web-hpa   Deployment/web   cpu: 5%/20%    1         8         1
 
 ## Generar carga (escalar)
 
-Con el uso normal de la aplicación es normal que no haya diferencias de carga significativas que obliguen a la aplicación a escalar. 
+Con el uso básico de la aplicación es normal que no haya diferencias de carga significativas que obliguen a la aplicación a escalar. 
 Para forzar el escalado, ejecuta este comando que simula un tráfico intenso:
 
 ```bash
