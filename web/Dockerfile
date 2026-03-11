@@ -19,6 +19,14 @@ RUN python3 -c "import sys; print('Python path:', sys.path)" && \
     python3 -c "import os; print('CWD:', os.getcwd()); print('Files:', os.listdir('.'))" && \
     python3 -c "import app; print('App imported successfully')"
 
+# ✅ Medida de seguridad: Crear usuario sin privilegios y asignar ownership de /app
+RUN addgroup --system appgroup && \
+    adduser --system --ingroup appgroup appuser && \
+    chown -R appuser:appgroup /app
+
+# ✅ Medida de seguridad: Cambiar al usuario sin privilegios
+USER appuser
+
 EXPOSE 5000
 
 # Usar python -m gunicorn para asegurar que use el Python del sistema
