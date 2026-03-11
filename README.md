@@ -15,8 +15,8 @@ Internet → nginx (1 pod) → web/Flask (1–8 pods) → Redis (1 pod)
 | Componente | Imagen | Réplicas |
 |------------|--------|----------|
 | nginx | custom (proxy inverso) | 1 (fija) |
-| web | custom (Flask + Python) | 1–8 (autoscaling) |
 | redis | redis:7-alpine | 1 (fija) |
+| web | custom (Flask + Python) | 1–8 (autoscaling) |
 
 Solo el pod `web` escala, ya que es el que recibe y procesa las peticiones HTTP.
 
@@ -81,7 +81,8 @@ web-hpa   Deployment/web   cpu: 5%/20%    1         8         1
 
 ## Generar carga (escalar)
 
-Ejecuta este comando para simular tráfico intenso:
+Con el uso normal de la aplicación es normal que no haya diferencias de carga significativas que obliguen a la aplicación a escalar. 
+Para forzar el escalado, ejecuta este comando que simula un tráfico intenso:
 
 ```bash
 kubectl run -it --rm load-generator --image=busybox -- /bin/sh -c \
@@ -93,6 +94,7 @@ En 10–30 segundos verás cómo:
 1. La CPU de los pods `web` sube por encima del 20%
 2. El HPA decide añadir réplicas
 3. Aparecen nuevos pods `web-xxx` en estado `Running`
+4. En la aplicación web, sube el número de visitas
 
 Para detener la carga: `Ctrl+C`
 
